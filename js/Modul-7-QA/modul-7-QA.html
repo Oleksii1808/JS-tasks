@@ -1,0 +1,263 @@
+<!doctype html>
+<html lang="uk">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Q&A: DOM і події</title>
+    <style>
+      * {
+        box-sizing: border-box;
+      }
+
+      body {
+        max-width: 720px;
+        margin: 0 auto;
+        padding: 48px 24px;
+        color: #172033;
+        background: #f4f7fb;
+        font-family:
+          system-ui,
+          -apple-system,
+          BlinkMacSystemFont,
+          "Segoe UI",
+          sans-serif;
+        line-height: 1.5;
+      }
+
+      button,
+      input,
+      select {
+        font: inherit;
+      }
+
+      button {
+        padding: 10px 16px;
+        color: #fff;
+        background: #4f46e5;
+        border: 0;
+        border-radius: 8px;
+        cursor: pointer;
+      }
+
+      button:hover {
+        background: #4338ca;
+      }
+
+      input,
+      select {
+        width: 100%;
+        padding: 10px 12px;
+        color: #172033;
+        background: #fff;
+        border: 1px solid #cbd5e1;
+        border-radius: 8px;
+      }
+
+      input:focus,
+      select:focus {
+        border-color: #4f46e5;
+        outline: 3px solid #ddd6fe;
+      }
+
+      .js-status,
+      .js-details,
+      .js-summary,
+      .js-preview {
+        padding: 14px 16px;
+        background: #fff;
+        border: 1px solid #dbe3ef;
+        border-radius: 10px;
+        box-shadow: 0 8px 24px rgb(15 23 42 / 6%);
+      }
+
+      .is-complete {
+        color: #166534;
+        background: #dcfce7;
+        border-color: #86efac;
+      }
+
+      .product-card {
+        margin: 12px 0;
+        padding: 20px;
+        background: #fff;
+        border: 1px solid #dbe3ef;
+        border-radius: 12px;
+        box-shadow: 0 8px 24px rgb(15 23 42 / 6%);
+      }
+
+      .product-card h2,
+      .product-card p {
+        margin: 0;
+      }
+
+      .product-card p {
+        margin-top: 8px;
+        color: #475569;
+      }
+
+      .js-delivery-form {
+        display: grid;
+        gap: 12px;
+        padding: 20px;
+        background: #fff;
+        border: 1px solid #dbe3ef;
+        border-radius: 12px;
+        box-shadow: 0 8px 24px rgb(15 23 42 / 6%);
+      }
+
+      .messages {
+        display: grid;
+        gap: 8px;
+        padding-left: 20px;
+      }
+
+      .messages li,
+      .js-products li,
+      .js-orders li {
+        padding: 12px 14px;
+        background: #fff;
+        border: 1px solid #dbe3ef;
+        border-radius: 8px;
+      }
+
+      .js-products,
+      .js-orders {
+        display: grid;
+        gap: 10px;
+        margin: 0;
+        padding: 0;
+        list-style: none;
+      }
+
+      .js-orders li {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 16px;
+      }
+
+      .js-orders button {
+        background: #dc2626;
+      }
+
+      .js-orders button:hover {
+        background: #b91c1c;
+      }
+
+      .js-cart,
+      .js-toggle {
+        box-shadow: 0 6px 18px rgb(79 70 229 / 22%);
+      }
+
+      .js-search,
+      .js-preview-input {
+        margin-bottom: 12px;
+      }
+
+      .js-modal {
+        position: fixed;
+        inset: 0;
+        display: flex;
+        opacity: 0;
+        pointer-events: none;
+        visibility: hidden;
+        align-items: center;
+        justify-content: center;
+        padding: 24px;
+        background: rgb(15 23 42 / 65%);
+      }
+
+      .js-modal.is-open {
+        opacity: 1;
+        pointer-events: auto;
+        visibility: visible;
+      }
+
+      .modal-content {
+        width: min(100%, 420px);
+        margin: 0;
+        padding: 32px;
+        text-align: center;
+        background: #fff;
+        border-radius: 16px;
+        box-shadow: 0 24px 60px rgb(15 23 42 / 30%);
+      }
+
+      .modal-content p {
+        margin: 0 0 20px;
+        font-size: 20px;
+        font-weight: 600;
+      }
+
+      .js-close-modal {
+        background: #475569;
+      }
+
+      .js-close-modal:hover {
+        background: #334155;
+      }
+    </style>
+  </head>
+  <body>
+    <!-- 01-order-status -->
+    <!-- <p class="js-status">Замовлення обробляється</p> -->
+
+    <!-- 02-cart-button -->
+    <!-- <button type="button" class="js-cart">У кошику: <span>0</span></button> -->
+
+    <!-- 03-product-card -->
+    <!-- <div class="js-products"></div> -->
+
+    <!-- 04-delivery-form -->
+    <!-- <form class="js-delivery-form">
+      <input name="name" placeholder="Ім'я" required />
+      <select name="city">
+        <option value="Київ">Київ</option>
+        <option value="Львів">Львів</option>
+      </select>
+      <button>Підтвердити</button>
+    </form>
+    <p class="js-summary"></p> -->
+
+    <!-- 05-message-filter -->
+    <!-- <input class="js-search" placeholder="Пошук повідомлень" />
+    <ul class="messages js-messages"></ul> -->
+
+    <!-- 06-toggle-details -->
+    <!-- <button type="button" class="js-toggle">Показати деталі</button>
+    <p class="js-details" style="display: none">Доставка завтра</p> -->
+
+    <!-- 07-remove-order -->
+    <!-- <ul class="js-orders"></ul> -->
+
+    <!-- 08-render-products -->
+    <!-- <ul class="js-products">
+      <li>Капучино — 250 грн</li>
+    </ul> -->
+
+    <!-- 09-live-preview -->
+    <!-- <input class="js-preview-input" placeholder="Введіть текст" />
+    <p class="js-preview">Тут зʼявиться текст</p> -->
+
+    <!-- 10-close-modal -->
+    <!-- <button type="button" class="js-open-modal">Відкрити модалку</button>
+    <div class="js-modal">
+      <div class="modal-content">
+        <p>Модальне вікно</p>
+        <button type="button" class="js-close-modal">Закрити</button>
+      </div>
+    </div> -->
+
+    <!-- Увімкніть лише один файл за раз. -->
+    <!-- <script src="./01-order-status.js" type="module"></script> -->
+    <!-- <script src="./02-cart-button.js" type="module"></script> -->
+    <!-- <script src="./03-product-card.js" type="module"></script> -->
+    <!-- <script src="./04-delivery-form.js" type="module"></script> -->
+    <!-- <script src="./05-message-filter.js" type="module"></script> -->
+    <!-- <script src="./06-toggle-details.js" type="module"></script> -->
+    <!-- <script src="./07-remove-order.js" type="module"></script> -->
+    <!-- <script src="./08-render-products.js" type="module"></script> -->
+    <!-- <script src="./09-live-preview.js" type="module"></script> -->
+    <!-- <script src="./10-close-modal.js" type="module"></script> -->
+  </body>
+</html>
